@@ -6,5 +6,12 @@ class UnsplashImage {
   final double width;
   final String downloadUrl;
 
-  const UnsplashImage({this.id, this.width, this.height, this.smallUrl, this.fullUrl, this.downloadUrl,});
+  const UnsplashImage({
+    this.id,
+    this.width,
+    this.height,
+    this.smallUrl,
+    this.fullUrl,
+    this.downloadUrl,
+  });
 }
