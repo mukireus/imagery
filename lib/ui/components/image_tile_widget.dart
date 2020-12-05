@@ -25,7 +25,7 @@ class ImageTileWidget extends StatelessWidget {
 
   Widget buildCachedNetworkImage(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: "image.smallUrl",
+      imageUrl: image.smallUrl,
       placeholder: (context, url) => buildImagePlaceHolder,
       errorWidget: (context, url, obj) => buildImageErrorWidget,
       fit: BoxFit.fitHeight,

@@ -35,7 +35,7 @@ class _HomeViewState extends State<HomeView> {
         slivers: <Widget>[
           buildSliverAppBar,
           buildImageGrid,
-        ],
+        ].where((element) => element != null).toList(),
       ),
     );
   }
@@ -53,15 +53,15 @@ class _HomeViewState extends State<HomeView> {
       keyboardType: TextInputType.text,
       controller: viewModel.searchController,
       decoration: InputDecoration(hintText: 'Ara...', border: InputBorder.none),
-      onSubmitted: (String keyword) => null,
-      // TODO onSubmitted
+      onSubmitted: (String keyword) => viewModel.loadImages(keyword),
     );
   }
 
   Widget get buildIconButtonReset {
     return IconButton(
-      icon: Icon(Icons.close), color: Colors.black87, onPressed: () => null,
-      // TODO onSubmitted
+      icon: Icon(Icons.close),
+      color: Colors.black87,
+      onPressed: () => viewModel.resetImages(),
     );
   }
 
@@ -69,30 +69,29 @@ class _HomeViewState extends State<HomeView> {
     return SliverPadding(
       padding: EdgeInsets.all(15),
       sliver: Observer(builder: (_) {
-        return
-            // ? SliverToBoxAdapter(child: Center(child: CircularProgressIndicator()))
-            SliverStaggeredGrid.countBuilder(
-          crossAxisCount: 2,
-          itemCount: 10,
-          itemBuilder: (BuildContext context, int index) => buildImageItem(index),
-          staggeredTileBuilder: (int index) => buildStaggeredTile(viewModel.images[index]),
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 5,
-        );
+        return viewModel.loadingImages
+            ? SliverToBoxAdapter(child: Center(child: CircularProgressIndicator()))
+            : SliverStaggeredGrid.countBuilder(
+                crossAxisCount: 2,
+                itemCount: viewModel.images.length,
+                itemBuilder: (BuildContext context, int index) => buildImageItem(index),
+                staggeredTileBuilder: (int index) => buildStaggeredTile(viewModel.images[index]),
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 5,
+              );
       }),
     );
   }
 
   StaggeredTile buildStaggeredTile(UnsplashImage image) {
-    // double aspectRatio = image.height.toDouble() / image.width.toDouble();
+    double aspectRatio = image.height.toDouble() / image.width.toDouble();
     double columnWidth = MediaQuery.of(context).size.width / 2;
-    // return StaggeredTile.extent(1, aspectRatio * columnWidth);
-    return StaggeredTile.extent(1, 2 * columnWidth);
+    return StaggeredTile.extent(1, aspectRatio * columnWidth);
   }
 
   Widget buildImageItem(int index) {
     return FutureBuilder(
-      // future: viewModel.loadImage(index),
+      future: viewModel.loadImage(index),
       builder: (context, snapshot) => ImageTileWidget(image: snapshot.data),
     );
   }
