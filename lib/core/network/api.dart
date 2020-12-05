@@ -6,10 +6,10 @@ import 'unsplash_response.dart';
 
 class API {
   static const Map<String, String> header = {
-    'Authorization': 'Client-ID ',
+    'Authorization': 'Client-ID 20TvOQBXHym4VpAmSyhefD8DP7tBHK81JZcs7Nyh-6s',
   };
 
-  String authorization = 'Client-ID ';
+  String authorization = 'Client-ID 20TvOQBXHym4VpAmSyhefD8DP7tBHK81JZcs7Nyh-6s';
 
   static Future<List<UnsplashResponse>> getRandomImages({int imageCount = 25}) async {
     final response = await http.get('https://api.unsplash.com/photos/random?count=$imageCount', headers: header);
