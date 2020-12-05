@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:imagery/core/base/base_view.dart';
-import 'package:imagery/ui/components/image_tile_widget.dart';
-import 'package:imagery/ui/home/model/unplash_image.dart';
-import 'package:imagery/ui/home/viewmodel/home_view_model.dart';
+
+import '../../../core/base/base_view.dart';
+import '../../components/image_tile_widget.dart';
+import '../model/unplash_image.dart';
+import '../viewmodel/home_view_model.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -34,7 +35,7 @@ class _HomeViewState extends State<HomeView> {
         slivers: <Widget>[
           buildSliverAppBar,
           buildImageGrid,
-        ].where((element) => element != null).toList(),
+        ],
       ),
     );
   }
