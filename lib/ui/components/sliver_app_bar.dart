@@ -13,6 +13,7 @@ class SliverSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      pinned: true,
       title: title,
       backgroundColor: Colors.white,
       actions: [buildIconButtonReset],
