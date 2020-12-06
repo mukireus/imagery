@@ -91,5 +91,6 @@ abstract class _HomeViewModelBase with Store, BaseViewModel {
   void resetImages() {
     searchController.clear();
     images = [];
+    loadImages();
   }
 }

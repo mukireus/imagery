@@ -4,8 +4,12 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../core/base/base_view.dart';
 import '../../components/image_tile_widget.dart';
+import '../../components/loading_indicator.dart';
+import '../../components/sliver_app_bar.dart';
 import '../model/unplash_image.dart';
 import '../viewmodel/home_view_model.dart';
+
+part 'home_images_view.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -23,28 +27,25 @@ class _HomeViewState extends State<HomeView> {
         model.setContext(context);
         viewModel = model;
       },
-      builder: (context, value) => buildScaffold,
+      builder: (context, value) => Scaffold(body: buildBody),
       model: HomeViewModel(),
     );
   }
 
-  Scaffold get buildScaffold {
-    return Scaffold(
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: <Widget>[
-          buildSliverAppBar,
-          buildImageGrid,
-        ].where((element) => element != null).toList(),
-      ),
+  CustomScrollView get buildBody {
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: <Widget>[
+        buildSliverAppBar,
+        buildImageGrid,
+      ],
     );
   }
 
-  SliverAppBar get buildSliverAppBar {
-    return SliverAppBar(
+  Widget get buildSliverAppBar {
+    return SliverSearchBar(
       title: buildTitleSearch,
-      backgroundColor: Colors.white,
-      actions: [buildIconButtonReset],
+      resetImages: viewModel.resetImages,
     );
   }
 
@@ -54,45 +55,6 @@ class _HomeViewState extends State<HomeView> {
       controller: viewModel.searchController,
       decoration: InputDecoration(hintText: 'Ara...', border: InputBorder.none),
       onSubmitted: (String keyword) => viewModel.loadImages(keyword),
-    );
-  }
-
-  Widget get buildIconButtonReset {
-    return IconButton(
-      icon: Icon(Icons.close),
-      color: Colors.black87,
-      onPressed: () => viewModel.resetImages(),
-    );
-  }
-
-  Widget get buildImageGrid {
-    return SliverPadding(
-      padding: EdgeInsets.all(15),
-      sliver: Observer(builder: (_) {
-        return viewModel.loadingImages
-            ? SliverToBoxAdapter(child: Center(child: CircularProgressIndicator()))
-            : SliverStaggeredGrid.countBuilder(
-                crossAxisCount: 2,
-                itemCount: viewModel.images.length,
-                itemBuilder: (BuildContext context, int index) => buildImageItem(index),
-                staggeredTileBuilder: (int index) => buildStaggeredTile(viewModel.images[index]),
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 5,
-              );
-      }),
-    );
-  }
-
-  StaggeredTile buildStaggeredTile(UnsplashImage image) {
-    double aspectRatio = image.height.toDouble() / image.width.toDouble();
-    double columnWidth = MediaQuery.of(context).size.width / 2;
-    return StaggeredTile.extent(1, aspectRatio * columnWidth);
-  }
-
-  Widget buildImageItem(int index) {
-    return FutureBuilder(
-      future: viewModel.loadImage(index),
-      builder: (context, snapshot) => ImageTileWidget(image: snapshot.data),
     );
   }
 }

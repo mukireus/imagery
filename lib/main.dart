@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:imagery/ui/home/view/home_view.dart';
+
+import 'ui/home/view/home_view.dart';
 
 void main() => runApp(Imagery());
 
@@ -9,6 +10,7 @@ class Imagery extends StatelessWidget {
     return MaterialApp(
       title: 'Imagery',
       home: HomeView(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
