@@ -18,7 +18,7 @@ extension HomeImagesView on _HomeViewState {
 
   SliverStaggeredGrid get buildSliverStaggeredGridBody {
     return SliverStaggeredGrid.countBuilder(
-      crossAxisCount: 2,
+      crossAxisCount: (MediaQuery.of(context).orientation == Orientation.portrait) ? 2 : 3,
       itemCount: viewModel.images.length,
       itemBuilder: (BuildContext context, int index) => buildImageItem(index),
       staggeredTileBuilder: (int index) => buildStaggeredTile(viewModel.images[index]),
